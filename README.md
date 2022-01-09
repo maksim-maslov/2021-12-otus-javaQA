@@ -17,13 +17,13 @@
 app/                    	
   src/                  
     main/
-	test/
-	  java/
-		ru.otus.homework/
-		  driver/			--> конфигурация webdriver
-		  listener/			--> listener
-		  page/				--> pageobject
-		  test/				--> тесты
+    test/
+      java/
+        ru.otus.homework/
+          driver/			--> конфигурация webdriver
+          listener/			--> listener
+          page/				--> pageobject
+          test/				--> тесты
   pom.xml					--> конфигурация maven
   testng.xml				--> конфигурация testng
   .gitignore				--> gitignore
