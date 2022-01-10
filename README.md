@@ -8,7 +8,16 @@
 ### run tests
 
 ```
-    mvn clean test -Dbrowser=CHROME -Dcourse="PHP Developer. Basic" -Dorder=max
+    mvn clean test -Dbrowser=CHROME -Dcourse="PHP Developer. Basic" -Dorder=min -Dcourses="Популярные курсы"
+    
+    or
+    
+    mvn clean test -Dbrowser=OPERA -Dcourse="Специализация С#" -Dorder=max -Dcourses="Специализации"
+    
+    browser - CHROME / FIREFOX / OPERA
+    course - Название курса для поиска ("PHP Developer. Basic", "Специализация C#", ...)
+    order - min / max (самый ранний, поздний курс) 
+    courses - Популярные курсы / Специализации    
 ```
 
 ### Структура файлов проекта
@@ -24,8 +33,8 @@ app/
           listener/			--> listener
           page/				--> pageobject
           test/				--> тесты
-  pom.xml					--> конфигурация maven
+  pom.xml			        --> конфигурация maven
   testng.xml				--> конфигурация testng
   .gitignore				--> gitignore
-  README.md					--> описание проекта
+  README.md			        --> описание проекта
 ```

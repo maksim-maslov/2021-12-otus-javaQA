@@ -16,7 +16,7 @@ public class MinMaxStartDateTest extends BaseTest {
             .moveToElementAndClickOnCourse(
                 actions,
                 mainPage.getCourseByMinMaxDate(
-                    mainPage.courses,
+                    courses,
                     order
                 )
             );

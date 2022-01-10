@@ -18,7 +18,11 @@ public class MainPage extends BasePage {
     private final String URL = "https://otus.ru/";
 
     @FindBy(xpath = "//a[contains(@class, 'js-stats lessons__new-item lessons__new-item_hovered')]")
-    public List<WebElement> courses;
+    public List<WebElement> popular;
+
+    @FindBy(xpath = "//a[contains(@class, 'lessons__new-item lessons__new-item_big lessons__new-item_hovered')]")
+    public List<WebElement> specializations;
+
 
     public MainPage(WebDriver driver) {
         super(driver);
@@ -37,12 +41,80 @@ public class MainPage extends BasePage {
     }
 
 
-    public WebElement filterCoursesByString(List<WebElement> webElements, String searchText) {
-        String xpath = ".//div[contains(@class, 'lessons__new-item-title lessons__new-item-title_with-bg js-ellipse')]";
+    public WebElement filterCoursesByString(String courses, String searchText) {
+
+        List<WebElement> webElements;
+        String xpath;
+
+        if (courses.equals("Популярные курсы")) {
+            webElements = popular;
+            xpath = ".//div[contains(@class, 'lessons__new-item-title lessons__new-item-title_with-bg js-ellipse')]";
+        } else {
+            webElements = specializations;
+            xpath = ".//div[contains(@class, 'lessons__new-item-title lessons__new-item-title_with-bg lessons__new-item-title_bundle')]";
+        }
+
         return webElements
             .stream()
             .filter(el -> el.findElement(By.xpath(xpath)).getText().equals(searchText))
             .findFirst().get();
+    }
+
+
+    public WebElement getCourseByMinMaxDate(String courses, String minmax) {
+
+        List<WebElement> webElements;
+        String xpath;
+
+        if (courses.equals("Популярные курсы")) {
+            webElements = popular;
+            xpath = ".//div[contains(@class, 'lessons__new-item-start')]";
+        } else {
+            webElements = specializations;
+            xpath = ".//div[contains(@class, 'lessons__new-item-time')]";
+        }
+
+        SimpleDateFormat format = new SimpleDateFormat("d MMMM yyyy", new Locale("ru"));
+
+        return webElements
+            .stream()
+            .filter(el -> getTimeFromDate(el, xpath, format) != 1000)
+            .reduce((left, right) -> {
+
+            if (getTimeFromDate(left, xpath, format) < getTimeFromDate(right, xpath, format)) {
+                return minmax.equals("min") ? left : right;
+            } else {
+                return minmax.equals("min") ? right : left;
+            }
+
+        }).get();
+    }
+
+
+    public long getTimeFromDate(WebElement webElement, String xpath, SimpleDateFormat format) {
+
+        String startDate = webElement.findElement(By.xpath(xpath)).getText();
+
+        String dateForParse = parseString(startDate, Pattern.compile("[0-9]{1,2}\\s(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)\\s[0-9]{4}"));
+
+        if (dateForParse.equals("")) {
+
+            String tempDateForParse  = parseString(startDate, Pattern.compile("[0-9]{1,2}\\s(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)"));
+
+            if (!tempDateForParse.equals("")) {
+                dateForParse = tempDateForParse + " 2022";
+            } else {
+                return 1000;
+            }
+        }
+
+        try {
+            return format.parse(dateForParse).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return 1000;
     }
 
 
@@ -55,43 +127,5 @@ public class MainPage extends BasePage {
         }
 
         return "";
-    }
-
-
-    public long getTimeFromDate(WebElement webElement, String xpath, SimpleDateFormat format) {
-
-        String startDate = webElement.findElement(By.xpath(xpath)).getText();
-
-        String dateForParse = parseString(startDate, Pattern.compile("[0-9]{1,2}\\s[а-я]{3,10}\\s[0-9]{4}"));
-
-        if (dateForParse.equals("")) {
-            dateForParse = parseString(startDate, Pattern.compile("[0-9]{1,2}\\s[а-я]{3,10}")) + " 2022";
-        }
-
-        try {
-            return format.parse(dateForParse).getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
-
-
-    public WebElement getCourseByMinMaxDate(List<WebElement> webElements, String minmax) {
-
-        String xpath = ".//div[contains(@class, 'lessons__new-item-start')]";
-        SimpleDateFormat format = new SimpleDateFormat("d MMMM yyyy", new Locale("ru"));
-
-        return webElements.stream().reduce((left, right) -> {
-
-            if (getTimeFromDate(left, xpath, format) < getTimeFromDate(right, xpath, format)) {
-                return minmax.equals("min") ? left : right;
-            } else {
-                return minmax.equals("min") ? right : left;
-            }
-
-        }).get();
-
     }
 }

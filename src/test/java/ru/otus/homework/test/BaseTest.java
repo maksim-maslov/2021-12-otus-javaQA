@@ -18,6 +18,8 @@ public class BaseTest {
 
     protected Actions actions;
 
+    protected String courses = System.getProperty("courses");
+
 
     @BeforeClass
     public void setUpDriver() throws InterruptedException {

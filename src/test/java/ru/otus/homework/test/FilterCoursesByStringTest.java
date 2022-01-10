@@ -16,7 +16,7 @@ public class FilterCoursesByStringTest extends BaseTest {
             .moveToElementAndClickOnCourse(
                 actions,
                 mainPage.filterCoursesByString(
-                    mainPage.courses,
+                    courses,
                     course
                 )
             );
