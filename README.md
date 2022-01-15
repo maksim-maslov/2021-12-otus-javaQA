@@ -9,9 +9,7 @@
 
 ```
     mvn clean test -Dbrowser=CHROME -Dcourse="PHP Developer. Basic" -Dorder=min -Dcourses="Популярные курсы"
-    
-    or
-    
+        
     mvn clean test -Dbrowser=OPERA -Dcourse="Специализация С#" -Dorder=max -Dcourses="Специализации"
     
     browser - CHROME / FIREFOX / OPERA
