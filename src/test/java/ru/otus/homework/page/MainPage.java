@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import ru.otus.homework.utils.NoFindCourseException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,23 +42,23 @@ public class MainPage extends BasePage {
     }
 
 
-    public WebElement filterCoursesByString(String courses, String searchText) {
+    public WebElement filterCoursesByString(String courses, String searchText) throws NoFindCourseException {
 
         List<WebElement> webElements;
-        String xpath;
+        By courseName;
 
         if (courses.equals("Популярные курсы")) {
             webElements = popular;
-            xpath = ".//div[contains(@class, 'lessons__new-item-title lessons__new-item-title_with-bg js-ellipse')]";
+            courseName = By.xpath(".//div[contains(@class, 'lessons__new-item-title lessons__new-item-title_with-bg js-ellipse')]");
         } else {
             webElements = specializations;
-            xpath = ".//div[contains(@class, 'lessons__new-item-title lessons__new-item-title_with-bg lessons__new-item-title_bundle')]";
+            courseName = By.xpath(".//div[contains(@class, 'lessons__new-item-title lessons__new-item-title_with-bg lessons__new-item-title_bundle')]");
         }
 
         return webElements
             .stream()
-            .filter(el -> el.findElement(By.xpath(xpath)).getText().equals(searchText))
-            .findFirst().get();
+            .filter(el -> el.findElement(courseName).getText().equals(searchText))
+            .findFirst().orElseThrow(() -> new NoFindCourseException());
     }
 
 

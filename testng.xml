@@ -1,6 +1,9 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 
 <suite name="somename">
+    <listeners>
+        <listener class-name="ru.otus.homework.listener.TestNGListener"></listener>
+    </listeners>
     <test name="navigationTest">
         <packages>
             <package name="ru.otus.homework.*"></package>

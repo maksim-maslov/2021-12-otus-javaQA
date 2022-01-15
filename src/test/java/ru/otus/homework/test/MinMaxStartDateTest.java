@@ -6,7 +6,7 @@ import ru.otus.homework.page.MainPage;
 public class MinMaxStartDateTest extends BaseTest {
 
     @Test
-    public void startDateTest() throws InterruptedException {
+    public void startDateTest() {
 
         String order = System.getProperty("order");
 
@@ -21,6 +21,5 @@ public class MinMaxStartDateTest extends BaseTest {
                 )
             );
 
-        Thread.sleep(5000);
     }
 }
