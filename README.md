@@ -2,7 +2,7 @@
 ### install
 
 ```
-    git clone https://github.com/maksim-maslov/2021-12-otus-javaQA
+    git clone https://github.com/maksim-maslov/otus-java-qa
 ```
 
 ### run tests
